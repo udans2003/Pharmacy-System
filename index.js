@@ -5,10 +5,13 @@ import studentRouter from "./routers/StudentRouter.js"
 import userRouter from "./routers/userRouter.js"
 import productRouter from "./routers/productRouter.js"
 import authenticate from "./middlewares/authentication.js"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express()
 
-const mongodbURI = "mongodb+srv://Admin:1234@cluster0.gsqeg3h.mongodb.net/"
+const mongodbURI = process.env.mongodbURI
 
 mongoose.connect(mongodbURI).then(
     ()=>{
