@@ -11,13 +11,21 @@ dotenv.config()
 
 const app = express()
 
-const mongodbURI = process.env.mongodbURI
+const mongodbURI = process.env.MONGODB_URI || process.env.mongodbURI || "mongodb://127.0.0.1:27017/i-computers"
 
-mongoose.connect(mongodbURI).then(
-    ()=>{
+async function startServer() {
+    try {
+        await mongoose.connect(mongodbURI, { serverSelectionTimeoutMS: 5000 })
         console.log("Mongodb Connected Successfuly")
+    } catch (error) {
+        console.error(`MongoDB connection failed for ${mongodbURI}`)
+        console.error(error.message)
     }
-)
+
+    app.listen(3000 , ()=>{                        //arrow function or anonymous function
+        console.log("server started successfully")
+    })
+}
 // function success(){
 //     console.log("Server Started Successfully")
 // }
@@ -51,7 +59,4 @@ app.put(
     }
 )
 
-
-app.listen(3000 , ()=>{                        //arrow function or anonymous function
-    console.log("server started successfully")
-})
+startServer()
